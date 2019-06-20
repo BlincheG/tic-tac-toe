@@ -6,7 +6,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // fieldRows: Array(9).fill(null),
+      fieldRows: Array(9).fill(null),
       currentPlayer: true,
     };
   }
@@ -37,7 +37,7 @@ class Board extends Component {
 
   render() {
     let status;
-    const winner = calculateWinner(this.props.fieldRows);
+    const winner = calculateWinner(this.state.fieldRows);
     if(winner) {
       status = 'Победитель: ' + winner;
     } else {
@@ -53,19 +53,19 @@ class Board extends Component {
         <button onClick={() => {this.newGame()} }>Начать заново</button>
 
         <div className="Board-row">
-          <Square value={this.props.fieldRows[0]} onClick={() => this.clickHandler(0)} />
-          <Square value={this.props.fieldRows[1]} onClick={() => this.clickHandler(1)}  />
-          <Square value={this.props.fieldRows[2]} onClick={() => this.clickHandler(2)}  />
+          <Square value={this.state.fieldRows[0]} onClick={() => this.clickHandler(0)} />
+          <Square value={this.state.fieldRows[1]} onClick={() => this.clickHandler(1)}  />
+          <Square value={this.state.fieldRows[2]} onClick={() => this.clickHandler(2)}  />
         </div>
         <div className="Board-row">
-          <Square value={this.props.fieldRows[3]} onClick={() => this.clickHandler(3)}  />
-          <Square value={this.props.fieldRows[4]} onClick={() => this.clickHandler(4)}  />
-          <Square value={this.props.fieldRows[5]} onClick={() => this.clickHandler(5)}  />
+          <Square value={this.state.fieldRows[3]} onClick={() => this.clickHandler(3)}  />
+          <Square value={this.state.fieldRows[4]} onClick={() => this.clickHandler(4)}  />
+          <Square value={this.state.fieldRows[5]} onClick={() => this.clickHandler(5)}  />
         </div>
         <div className="Board-row">
-          <Square value={this.props.fieldRows[6]} onClick={() => this.clickHandler(6)}  />
-          <Square value={this.props.fieldRows[7]} onClick={() => this.clickHandler(7)}  />
-          <Square value={this.props.fieldRows[8]} onClick={() => this.clickHandler(8)}  />
+          <Square value={this.state.fieldRows[6]} onClick={() => this.clickHandler(6)}  />
+          <Square value={this.state.fieldRows[7]} onClick={() => this.clickHandler(7)}  />
+          <Square value={this.state.fieldRows[8]} onClick={() => this.clickHandler(8)}  />
         </div>
       </div>
     );

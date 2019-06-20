@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {addCounter, decrementCounter, incrementCounter, subtractCounter} from "../../store/actions";
 
 class Counter extends Component {
   render() {
@@ -7,9 +8,9 @@ class Counter extends Component {
       <div className="Counter">
         <h1>{this.props.ctr}</h1>
         <button onClick={this.props.increaseCounter}>Increase</button>
-        <button>Decrease</button>
+        <button onClick={this.props.descreaseCounter}>Decrease</button>
         <button onClick={this.props.addCounter}>Increase by 5</button>
-        <button>Descrease by 5</button>
+        <button onClick={this.props.subtractCounter}>Descrease by 5</button>
       </div>
     );
   }
@@ -23,8 +24,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    increaseCounter: () => dispatch({type: 'INCREMENT'}),
-    addCounter: () => dispatch({type: 'ADD', value: 5})
+    increaseCounter: () => dispatch(incrementCounter()),
+    descreaseCounter: () => dispatch(decrementCounter()),
+    subtractCounter: () => dispatch(subtractCounter(5)),
+    addCounter: () => dispatch(addCounter(5))
   }
 };
 
