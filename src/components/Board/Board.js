@@ -1,94 +1,107 @@
 import React, {Component} from 'react';
-import Square from '../Square'
-
-// const FIELD_ROWS = [
-//     [], [], [],
-//     [], [], [],
-//     [], [], []
-// ];
+import Square from '../Square';
+import {connect} from 'react-redux';
 
 class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPlayer: 'X',
-      winningPlayer: false,
-      fieldRows: Array(9).fill(null)
-    }
-  };
+      // fieldRows: Array(9).fill(null),
+      currentPlayer: true,
+    };
+  }
 
   clickHandler = (i) => {
-    const squares = this.state.fieldRows.slice();
-    if (this.calculateWinner(squares) && squares[i]) {
+    const squares = [...this.state.fieldRows];
+    if (calculateWinner(squares) || squares[i]) {
       return;
-    }
-    const currentPlayer = this.state.currentPlayer === 'X' ? 'O' : 'X';
+    };
+
+    squares[i] = this.state.currentPlayer ? 'X' : 'O';
+
     this.setState({
-      currentPlayer,
-      fieldRows: squares
+      fieldRows: squares,
+      currentPlayer: !this.state.currentPlayer,
     });
-    console.log(squares);
   };
 
-  calculateWinner = (squares) => {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
+  newGame = () => {
+    const cleanBoard = Array(9).fill(null);
+    const currentPlayer = this.state.currentPlayer === false ? 'X' : 'O';
 
-    for (let i = 0; i < lines.length; i += 1) {
-      const [a, b, c] = lines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return { winner: squares[a], winnerRow: lines[i] };
-      }
-    }
-
-    return { winner: null, winnerRow: null };
-  };
+    this.setState({
+      fieldRows: cleanBoard,
+      currentPlayer: currentPlayer
+    })
+  }
 
   render() {
     let status;
-    const defaultProps = {onClick: this.clickHandler, currentPlayer: this.state.currentPlayer};
-    const winner = this.calculateWinner(this.state.fieldRows);
-
+    const winner = calculateWinner(this.props.fieldRows);
     if(winner) {
-      status = 'Winner ' + winner;
+      status = 'Победитель: ' + winner;
     } else {
-      status = 'Next Player ' + (this.state.currentPlayer);
-    }
+      status = 'Следующий игрок: ' + (this.state.currentPlayer ? 'X' : 'O');
+  }
 
     return (
       <div className="Board">
         <div className="status">
-          Next Player: {status}
+          {status}
         </div>
 
-        {/*{FIELD_ROWS.map(i => (*/}
-        {/*  <div className="Board-row"*/}
-        {/*       key={`row-key-${i}`}*/}
-        {/*  >*/}
-        {/*    <Square index={i} {...defaultProps}  />*/}
-        {/*    <Square index={i + 3} {...defaultProps} />*/}
-        {/*    <Square index={i + 4} {...defaultProps} />*/}
-        {/*  </div>*/}
-        {/*))}*/}
-        {this.state.fieldRows.map(i => (
-          <div className="Board-row"
-                key={`row-key-${Math.random()}`}
-          >
-            <Square value={this.state.fieldRows[i]} {...defaultProps} />
+        <button onClick={() => {this.newGame()} }>Начать заново</button>
 
-          </div>
-        ))}
+        <div className="Board-row">
+          <Square value={this.props.fieldRows[0]} onClick={() => this.clickHandler(0)} />
+          <Square value={this.props.fieldRows[1]} onClick={() => this.clickHandler(1)}  />
+          <Square value={this.props.fieldRows[2]} onClick={() => this.clickHandler(2)}  />
+        </div>
+        <div className="Board-row">
+          <Square value={this.props.fieldRows[3]} onClick={() => this.clickHandler(3)}  />
+          <Square value={this.props.fieldRows[4]} onClick={() => this.clickHandler(4)}  />
+          <Square value={this.props.fieldRows[5]} onClick={() => this.clickHandler(5)}  />
+        </div>
+        <div className="Board-row">
+          <Square value={this.props.fieldRows[6]} onClick={() => this.clickHandler(6)}  />
+          <Square value={this.props.fieldRows[7]} onClick={() => this.clickHandler(7)}  />
+          <Square value={this.props.fieldRows[8]} onClick={() => this.clickHandler(8)}  />
+        </div>
       </div>
     );
   }
 }
 
-export default Board;
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
+const mapStateToProps = state => {
+  return {
+    fieldRows: state.fieldRows
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fieldRows: () => dispatch({type: 'HANDLE_CLICK'}),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

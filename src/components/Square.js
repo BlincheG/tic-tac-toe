@@ -2,24 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class Square extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: ''
-    }
-  }
-
-  onSquareClick = () => {
-    if (!this.state.value) {
-      this.setState({value: this.props.currentPlayer});
-      this.props.onClick();
-    }
-  };
-
   render() {
     return (
-      <div className="Square" onClick={this.onSquareClick}>
-        {this.state.value}
+      <div className="Square" onClick={this.props.onClick}>
+        {this.props.value}
       </div>
     );
   }
@@ -28,7 +14,6 @@ class Square extends Component {
 export default Square;
 
 Square.propTypes = {
-  value: PropTypes.string,
-  currentPlayer: PropTypes.string.isRequired,
+  value: PropTypes.array,
   onClick: PropTypes.func.isRequired
 };
