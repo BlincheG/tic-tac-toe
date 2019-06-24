@@ -28,20 +28,15 @@ class Board extends Component {
         <button onClick={newGame}>Начать заново</button>
 
         <div className="Board-row">
-          <Square value={this.props.fieldRows[0]} onClick={() => this.props.handleClick(0)} />
-          <Square value={this.props.fieldRows[1]} onClick={() => this.props.handleClick(1)}  />
-          <Square value={this.props.fieldRows[2]} onClick={() => this.props.handleClick(2)}  />
+          {fieldRows.map((item, index) =>
+            <Square
+              value={item}
+              onClick={() => this.props.handleClick(index)}
+              key={index}
+            />
+          )}
         </div>
-        <div className="Board-row">
-          <Square value={this.props.fieldRows[3]} onClick={() => this.props.handleClick(3)}  />
-          <Square value={this.props.fieldRows[4]} onClick={() => this.props.handleClick(4)}  />
-          <Square value={this.props.fieldRows[5]} onClick={() => this.props.handleClick(5)}  />
-        </div>
-        <div className="Board-row">
-          <Square value={this.props.fieldRows[6]} onClick={() => this.props.handleClick(6)}  />
-          <Square value={this.props.fieldRows[7]} onClick={() => this.props.handleClick(7)}  />
-          <Square value={this.props.fieldRows[8]} onClick={() => this.props.handleClick(8)}  />
-        </div>
+
       </div>
     );
   }
